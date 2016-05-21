@@ -1,0 +1,50 @@
+
+import MySQLdb
+
+from MySQLdb import cursors
+
+from sets import Set
+
+
+
+
+db= MySQLdb.connect(host="localhost",user="root",passwd="root",db="apbi")
+cur = db.cursor()
+
+# Use all the SQL you like
+cur.execute("SELECT * FROM ticket")
+
+# print all the first cell of all the rows
+
+result=cur.fetchall()
+
+print(type(result))
+current = 0
+
+diff=0
+currentconv=0
+checked= Set()
+for row in result:
+
+
+	i=db.cursor()
+	previous=current
+	current= row[2]
+	previousconv=currentconv
+	currentconv=row[5]
+	
+	j=0
+	if((previousconv==currentconv)& (currentconv not in checked)):
+		checked.add(previousconv)
+		j+=1
+		difference=int(current-previous)
+		print (row[0])
+		#print (type(row[0]))
+		#print (type(difference))
+		#print ("UPDATE marks SET frt=" +str(difference) + " where name = \'"+ str(row[0]) + "\'")
+	
+		i.execute("UPDATE ticket SET frt=" +str(difference) + " where ticket_id = \'"+ str(row[5]) + "\'")
+		db.commit()
+
+
+db.close()
